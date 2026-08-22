@@ -1,0 +1,20 @@
+# Ignore local class materials
+class_materials/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore environment files
+.env
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Ignore some specific files
+.Rhistory
