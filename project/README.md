@@ -34,3 +34,19 @@ This project utilizes a static 5-year historical daily dataset of the S&P 500 in
 - `src/`: Modular Python scripts for feature creation and modeling.
 - `notebooks/`: Exploratory Data Analysis and regression diagnostics.
 - `docs/`: Stakeholder memos and project documentation.
+
+## Data Storage (Stage 05)
+
+### 1. Data Folder Structure
+The repository establishes a strict lifecycle separation between raw and processed environments:
+- `data/raw/`: Stores immutable raw CSV files acquired during API ingestion and Web Scraping.
+- `data/processed/`: Stores binary Parquet files converted from raw files for downstream analytics and modeling.
+
+### 2. File Formats Used & Rationale
+- **CSV (`.csv`)**: Used in `data/raw/` for initial ingestion snapshots to allow human inspection and simple diffing.
+- **Parquet (`.parquet`)**: Used in `data/processed/` for efficient binary storage. Preserves column data types (such as `datetime64`) natively, reduces disk I/O, and speeds up read performance for modeling.
+
+### 3. Dynamic File Reading & Storage Pipeline
+- **Environment-Driven Paths**: Paths are managed securely via `.env` (`DATA_DIR_RAW` and `DATA_DIR_PROCESSED`) to avoid hardcoded absolute directory strings.
+- **Automated Latest File Resolution**: The pipeline uses dynamic filename matching (`glob`) to locate and load the latest timestamped raw CSV file from `data/raw/`.
+- **Validation & Transformation**: Reads the latest raw CSV, validates shape and data type parity against in-memory data, and transforms it into `.parquet` in `data/processed/`.
